@@ -29,7 +29,16 @@ defmodule AlphabetCipher.Coder do
 
 
   def decipher(cipher, message) do
-    "decipher"
+    alpha = "abcdefghijklmnopqrstuvwxyz"
+
+    result = for i <- 0..(String.length(message) - 1), into: [] do
+      {position, _} = :binary.match(alpha, String.at(message, i))
+      text = String.slice(alpha, position..-1) <> String.slice(alpha, 0..(position-1))
+      {index, _} = :binary.match(text, String.at(cipher, i))
+      index
+    end |> Enum.reduce("", fn index, acc ->
+      acc <> String.at(alpha, index)
+    end)
   end
 
   def lengthKey(secretKey, message) do
