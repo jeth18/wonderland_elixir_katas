@@ -38,7 +38,18 @@ defmodule AlphabetCipher.Coder do
       index
     end |> Enum.reduce("", fn index, acc ->
       acc <> String.at(alpha, index)
-    end)
+    end) |> String.split("", trim: true)
+
+    str = for i <- 2..length(result) do
+      Enum.chunk_every(result, i, 1, :discard) |> Enum.map(fn x -> Enum.join(x, "") end) |> Enum.uniq() |> Enum.join("")
+    end
+      |> Enum.at(0)
+
+    String.slice(str, String.length(str)-1..-1) <> String.slice(str, 0..String.length(str)-2)
+      |> String.split("", trim: true)
+      |> Enum.chunk_every(2)
+      |> Enum.map( fn x -> Enum.uniq(x) end)
+      |> Enum.join("")
   end
 
   def lengthKey(secretKey, message) do
