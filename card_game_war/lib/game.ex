@@ -58,13 +58,13 @@ defmodule CardGameWar.Game do
     suit2 = suitToValue(h2.suits)
 
     cond do
-      rank1 > rank2 -> game([h | [h2 | t]], t2)
-      rank1 < rank2 -> game(t, [h2 | [h | t2]])
+      rank1 > rank2 -> game(t++[h2]++[h], t2)
+      rank1 < rank2 -> game(t, t2++[h]++[h2])
       true ->
         if suit1 > suit2 do
-          game([h | [h2 | t]], t2)
+          game(t++[h2]++[h], t2)
         else
-          game(t, [h2 | [h | t2]])
+          game(t, t2++[h]++[h2])
         end
     end
  end
